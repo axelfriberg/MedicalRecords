@@ -1,13 +1,15 @@
 package common;
 
 public class MedicalRecord {
-    String patient;
     String nurse;
     String doctor;
+    String division;
+    String bloodType;
 
-    public MedicalRecord(String p, String n, String d){
-        patient = p;
-        nurse = n;
-        doctor = d;
+    public MedicalRecord(String nurse, String doctor, String division, String bloodType){
+        this.nurse = nurse;
+        this.doctor = doctor;
+        this.division = division;
+        this.bloodType = bloodType;
     }
 }
