@@ -1,5 +1,5 @@
-package server;
-import common.*;
+package Server;
+import Common.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 

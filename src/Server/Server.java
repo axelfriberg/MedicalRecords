@@ -1,4 +1,4 @@
-package server;
+package Server;
 import java.io.*;
 import java.net.*;
 import java.security.KeyStore;
