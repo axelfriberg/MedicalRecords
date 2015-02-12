@@ -1,5 +1,5 @@
 package server;
-import common.MedicalRecord;
+import common.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
