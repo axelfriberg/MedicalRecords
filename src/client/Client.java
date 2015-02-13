@@ -1,17 +1,15 @@
-package Client;
-import java.net.*;
+package client;
 import java.io.*;
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
 import java.security.KeyStore;
-import java.security.cert.*;
 
 /*
- * This example shows how to set up a key manager to perform Client
+ * This example shows how to set up a key manager to perform client
  * authentication.
  *
- * This program assumes that the Client is not inside a firewall.
- * The application can be modified to connect to a Server outside
+ * This program assumes that the client is not inside a firewall.
+ * The application can be modified to connect to a server outside
  * the firewall by following SSLSocketClientWithTunneling.java.
  */
 public class Client {
@@ -23,18 +21,18 @@ public class Client {
             System.out.println("args[" + i + "] = " + args[i]);
         }
         if (args.length < 2) {
-            System.out.println("USAGE: java Client host port");
+            System.out.println("USAGE: java client host port");
             System.exit(-1);
         }
         try { /* get input parameters */
             host = args[0];
             port = Integer.parseInt(args[1]);
         } catch (IllegalArgumentException e) {
-            System.out.println("USAGE: java Client host port");
+            System.out.println("USAGE: java client host port");
             System.exit(-1);
         }
 
-        try { /* set up a key manager for Client authentication */
+        try { /* set up a key manager for client authentication */
             SSLSocketFactory factory = null;
             try {
                 char[] password = "password".toCharArray();
@@ -66,7 +64,7 @@ public class Client {
             SSLSession session = socket.getSession();
             X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
             String subject = cert.getSubjectDN().getName();
-            System.out.println("certificate name (subject DN field) on certificate received from Server:\n" + subject + "\n");
+            System.out.println("certificate name (subject DN field) on certificate received from server:\n" + subject + "\n");
             System.out.println("socket after handshake:\n" + socket + "\n");
             System.out.println("secure connection established\n\n");
 
@@ -80,12 +78,12 @@ public class Client {
                 if (msg.equalsIgnoreCase("quit")) {
                     break;
                 }
-                System.out.print("sending '" + msg + "' to Server...");
+                System.out.print("sending '" + msg + "' to server...");
                 out.println(msg);
                 out.flush();
                 System.out.println("done");
 
-                System.out.println("received '" + in.readLine() + "' from Server\n");
+                System.out.println("received '" + in.readLine() + "' from server\n");
             }
             in.close();
             out.close();
