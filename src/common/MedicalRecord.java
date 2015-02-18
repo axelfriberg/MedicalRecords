@@ -12,4 +12,8 @@ public class MedicalRecord {
         this.division = division;
         this.bloodType = bloodType;
     }
+
+    public String toString(){
+        return "Doctor: " + doctor + " Division: " + division + " Nurse:" + nurse + " Blood Type: " + bloodType;
+    }
 }
