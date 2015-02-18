@@ -2,6 +2,7 @@ package server;
 import common.MedicalRecord;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.net.*;
 import java.security.KeyStore;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ import javax.security.cert.X509Certificate;
 public class Server implements Runnable {
     private ServerSocket serverSocket = null;
     private static int numConnectedClients = 0;
-    private Database database;
+    private ArrayList<MedicalRecord> database;
 
 
 
@@ -26,8 +27,8 @@ public class Server implements Runnable {
 
     public void run() {
         try {
-            database = new Database();
-            //database.add(new MedicalRecord("Doctor", "Nurse", "Lund", "A+"));
+            database = new ArrayList<MedicalRecord>();
+            database.add(new MedicalRecord("Doctor", "Nurse", "Lund", "A+"));
             SSLSocket socket=(SSLSocket)serverSocket.accept();
             newListener();
             SSLSession session = socket.getSession();
@@ -36,7 +37,22 @@ public class Server implements Runnable {
             Character clearance = subject.charAt(3);
             numConnectedClients++;
             System.out.println("client connected");
+
             System.out.println("client name (cert subject DN field): " + subject);
+
+            //For testing purposes
+            if (clearance == 'n'){
+                System.out.println("You are a nurse");
+            } else if (clearance == 'g'){
+                System.out.println("You are a government employee");
+            } else if (clearance == 'd'){
+                System.out.println("You are a doctor");
+            } else if (clearance == 'p'){
+                System.out.println("You are a patient");
+            } else {
+                System.out.println("I do not recognize you");
+            }
+
             System.out.println("Clearance level is: " + clearance);
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
 
@@ -47,8 +63,11 @@ public class Server implements Runnable {
 
             String clientMsg = null;
             while ((clientMsg = in.readLine()) != null) {
-                String rev = new StringBuilder(clientMsg).reverse().toString();
-                String returnMsg = rev;
+                String[] parts = clientMsg.split(" ");
+                String returnMsg = "Command not recognized";
+                if(parts[0].compareTo("read") == 0){
+                    returnMsg = database.get(Integer.parseInt(parts[2])).toString();
+                }
                 System.out.println("received '" + clientMsg + "' from client");
                 System.out.print("sending '" + returnMsg + "' to client...");
                 out.println(returnMsg);
