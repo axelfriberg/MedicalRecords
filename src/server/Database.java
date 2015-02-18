@@ -13,9 +13,13 @@ public class Database {
         dataBase = new HashMap<String, ArrayList<MedicalRecord>>();
 
     }
+    public void add(String patient, MedicalRecord m){
+        dataBase.get(patient).add(m);
 
-    public ArrayList<MedicalRecord> patientRecords(String id){
-        return dataBase.get(id);
+    }
+
+    public ArrayList<MedicalRecord> patientRecords(String patient){
+        return dataBase.get(patient);
     }
     public ArrayList<MedicalRecord> divisionRecords(String div){
         recordList = new ArrayList<MedicalRecord>();
