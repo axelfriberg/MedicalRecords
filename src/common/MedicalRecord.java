@@ -22,4 +22,8 @@ public class MedicalRecord {
     public String getNurse(){
         return nurse;
     }
+
+    public String getDoctor() {
+        return doctor;
+    }
 }

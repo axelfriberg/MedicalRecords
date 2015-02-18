@@ -41,5 +41,17 @@ public class Database {
         }
         return recordList;
     }
+    public ArrayList<MedicalRecord> doctorRecords(String doctor){
+        recordList = new ArrayList<MedicalRecord>();
+        iter = dataBase.keySet().iterator();
+        while(iter.hasNext()){
+            for(MedicalRecord m:dataBase.get(iter.next())){
+                if(m.getDoctor().equals(doctor)){
+                    recordList.add(m);
+                }
+            }
+        }
+        return recordList;
+    }
 
 }
