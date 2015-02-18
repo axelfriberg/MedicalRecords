@@ -14,7 +14,9 @@ import javax.security.cert.X509Certificate;
 public class Server implements Runnable {
     private ServerSocket serverSocket = null;
     private static int numConnectedClients = 0;
-    HashMap<String, ArrayList<MedicalRecord>> PatientDB;
+    private Database database;
+
+
 
 
     public Server(ServerSocket ss) throws IOException {
@@ -24,6 +26,7 @@ public class Server implements Runnable {
 
     public void run() {
         try {
+            database = new Database();
             //database.add(new MedicalRecord("Doctor", "Nurse", "Lund", "A+"));
             SSLSocket socket=(SSLSocket)serverSocket.accept();
             newListener();
@@ -44,8 +47,8 @@ public class Server implements Runnable {
 
             String clientMsg = null;
             while ((clientMsg = in.readLine()) != null) {
-                //String rev = new StringBuilder(clientMsg).reverse().toString();
-                String returnMsg = database.get(Integer.parseInt(clientMsg)).toString();
+                String rev = new StringBuilder(clientMsg).reverse().toString();
+                String returnMsg = rev;
                 System.out.println("received '" + clientMsg + "' from client");
                 System.out.print("sending '" + returnMsg + "' to client...");
                 out.println(returnMsg);
