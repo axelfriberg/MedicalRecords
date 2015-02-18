@@ -17,6 +17,13 @@ public class Database {
         dataBase.get(patient).add(m);
 
     }
+    public void remove(String patient, MedicalRecord medicalRecord){
+        for(MedicalRecord m: dataBase.get(patient)){
+            if(medicalRecord == m){
+                dataBase.get(patient).remove(m);
+            }
+        }
+    }
 
     public ArrayList<MedicalRecord> patientRecords(String patient){
         return dataBase.get(patient);
