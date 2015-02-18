@@ -12,6 +12,8 @@ public class AuditLog {
     public void writeToLog(String str) {
 
         writer.println(str);
+        //to do
+
 
     }
 
