@@ -16,4 +16,10 @@ public class MedicalRecord {
     public String toString(){
         return "Doctor: " + doctor + " Division: " + division + " Nurse:" + nurse + " Blood Type: " + bloodType;
     }
+    public String getDivision(){
+        return division;
+    }
+    public String getNurse(){
+        return nurse;
+    }
 }
