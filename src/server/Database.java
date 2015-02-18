@@ -7,7 +7,7 @@ import java.util.Iterator;
 public class Database {
     private HashMap<String, ArrayList<MedicalRecord>> dataBase;
     private ArrayList<MedicalRecord> recordList;
-    Iterator<MedicalRecord> iter;
+    Iterator<String> iter;
 
     public Database(){
         dataBase = new HashMap<String, ArrayList<MedicalRecord>>();
@@ -19,7 +19,7 @@ public class Database {
     }
     public ArrayList<MedicalRecord> divisionRecords(String div){
         recordList = new ArrayList<MedicalRecord>();
-        Iterator<String> keyIter = dataBase.keySet().iterator();
+        iter = dataBase.keySet().iterator();
         while(iter.hasNext()){
             for(MedicalRecord m: dataBase.get(iter.next())){
                 if(m.getDivision().equals(div)){
@@ -31,7 +31,7 @@ public class Database {
     }
     public ArrayList<MedicalRecord> nurseRecords(String nurse){
         recordList = new ArrayList<MedicalRecord>();
-        Iterator<String> keyIter = dataBase.keySet().iterator();
+        iter = dataBase.keySet().iterator();
         while(iter.hasNext()){
             for(MedicalRecord m: dataBase.get(iter.next())){
                 if(m.getNurse().equals(nurse)){
