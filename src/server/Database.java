@@ -1,5 +1,7 @@
 package server;
 import common.*;
+
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -22,16 +24,31 @@ public class Database {
 
 
     }
-    public void remove(String patient, MedicalRecord medicalRecord){
-        for(MedicalRecord m: database.get(patient)){
-            if(medicalRecord == m){
-                database.get(patient).remove(m);
+    public void remove(String patient, MedicalRecord medicalRecord) {
+        boolean removedRecord = false;
+        if (database.containsKey(patient)) {
+            for (MedicalRecord m : database.get(patient)) {
+                if (medicalRecord == m) {
+                    removedRecord = true;
+                    database.get(patient).remove(m);
+                }
             }
+            if(removedRecord){
+                System.out.println("Medical Record has successfully been removed");
+            } else {
+                System.out.println("No such Medical Record found");
+            }
+        } else {
+            System.out.println("No such patient found");
         }
     }
-
     public ArrayList<MedicalRecord> patientRecords(String patient) {
-        return database.get(patient);
+        if(database.containsKey(patient)){
+            return database.get(patient);
+        } else{
+            System.out.println("No such patient found");
+            return null;
+        }
     }
     public ArrayList<MedicalRecord> divisionRecords(String div){
         recordList = new ArrayList<MedicalRecord>();
@@ -43,7 +60,12 @@ public class Database {
                 }
             }
         }
-        return recordList;
+        if(recordList.size() > 0){
+            return recordList;
+        } else {
+            System.out.println("No records found for this division");
+            return null;
+        }
     }
     public ArrayList<MedicalRecord> nurseRecords(String nurse){
         recordList = new ArrayList<MedicalRecord>();
@@ -55,7 +77,12 @@ public class Database {
                 }
             }
         }
-        return recordList;
+        if(recordList.size() > 0){
+            return recordList;
+        } else{
+            System.out.println("No records found for this nurse");
+            return null;
+        }
     }
     public ArrayList<MedicalRecord> doctorRecords(String doctor){
         recordList = new ArrayList<MedicalRecord>();
@@ -67,7 +94,12 @@ public class Database {
                 }
             }
         }
-        return recordList;
+        if(recordList.size() > 0){
+            return recordList;
+        } else {
+            System.out.println("No records found for this doctor");
+            return null;
+        }
     }
 
 }
