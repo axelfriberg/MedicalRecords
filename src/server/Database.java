@@ -14,7 +14,12 @@ public class Database {
 
     }
     public void add(String patient, MedicalRecord m){
+        if(!database.containsKey(patient)){
+            database.put(patient, new ArrayList<MedicalRecord>());
+        }
         database.get(patient).add(m);
+
+
 
     }
     public void remove(String patient, MedicalRecord medicalRecord){
