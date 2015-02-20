@@ -11,6 +11,8 @@ import java.security.KeyStore;
  * This program assumes that the client is not inside a firewall.
  * The application can be modified to connect to a server outside
  * the firewall by following SSLSocketClientWithTunneling.java.
+ *
+ * Arguments: host, port, keystore, password
  */
 public class Client {
 
