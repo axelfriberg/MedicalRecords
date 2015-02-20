@@ -15,7 +15,7 @@ import javax.security.cert.X509Certificate;
 public class Server implements Runnable {
     private ServerSocket serverSocket = null;
     private static int numConnectedClients = 0;
-    private ArrayList<MedicalRecord> database;
+    private Database database;
 
 
 
@@ -27,8 +27,8 @@ public class Server implements Runnable {
 
     public void run() {
         try {
-            database = new ArrayList<MedicalRecord>();
-            database.add(new MedicalRecord("Doctor", "Nurse", "Lund", "A+"));
+            database = new Database();
+            database.add("1",new MedicalRecord("Doctor", "Nurse", "Lund", "A+"));
             SSLSocket socket=(SSLSocket)serverSocket.accept();
             newListener();
             SSLSession session = socket.getSession();
@@ -65,9 +65,9 @@ public class Server implements Runnable {
             while ((clientMsg = in.readLine()) != null) {
                 String[] parts = clientMsg.split(" ");
                 String returnMsg = "Command not recognized";
-                if(parts[0].compareTo("read") == 0){
-                    returnMsg = database.get(Integer.parseInt(parts[2])).toString();
-                }
+//                if(parts[0].compareTo("read") == 0){
+//                    returnMsg = database.get(Integer.parseInt(parts[2])).toString();
+//                }
                 System.out.println("received '" + clientMsg + "' from client");
                 System.out.print("sending '" + returnMsg + "' to client...");
                 out.println(returnMsg);
