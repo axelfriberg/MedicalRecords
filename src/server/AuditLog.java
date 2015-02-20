@@ -1,8 +1,6 @@
 package server;
 
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -10,14 +8,13 @@ import java.util.Calendar;
  * Created by johanmansson on 15-02-18.
  */
 public class AuditLog {
-    PrintWriter writer;
+    PrintStream out;
 
     public AuditLog(){
         try {
-            writer = new PrintWriter("auditlog.tex", "UTF-8");
+            FileOutputStream auditfile = new FileOutputStream("auditlog.tex", true);
+            out = new PrintStream(auditfile);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
     }
@@ -25,16 +22,15 @@ public class AuditLog {
 
 
     public void printConnected(String userType) {
-        String timeStamp = new SimpleDateFormat("yyyy.MM.dd-HH.mm").format(Calendar.getInstance().getTime());
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
-        writer.println(timeStamp + " " + userType + " " + "is connected to database");
+        out.println(timeStamp + " " + userType + " " + "is connected to database");
+        out.flush();
 
 
     }
 
-    public void closeLog() {
-        writer.close();
-    }
+
 
 
 

@@ -16,11 +16,15 @@ public class Server implements Runnable {
     private ServerSocket serverSocket = null;
     private static int numConnectedClients = 0;
     private Database database;
+    private AuditLog auditLog;
+
 
 
 
 
     public Server(ServerSocket ss) throws IOException {
+        //Start auditLog
+        auditLog = new AuditLog();
         serverSocket = ss;
         newListener();
     }
@@ -34,8 +38,11 @@ public class Server implements Runnable {
             SSLSession session = socket.getSession();
             X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
             String subject = cert.getSubjectDN().getName();
+
             Character clearance = subject.charAt(3);
             numConnectedClients++;
+            String id = subject.substring(3,6);
+            auditLog.printConnected(id);
             System.out.println("client connected");
 
             System.out.println("client name (cert subject DN field): " + subject);
@@ -87,7 +94,9 @@ public class Server implements Runnable {
         }
     }
 
-    private void newListener() { (new Thread(this)).start(); } // calls run()
+    private void newListener() {
+        (new Thread(this)).start();
+    } // calls run()
 
     public static void main(String args[]) {
         System.out.println("\nserver Started\n");
@@ -96,6 +105,7 @@ public class Server implements Runnable {
             port = Integer.parseInt(args[0]);
         }
         String type = "TLS";
+
         try {
             ServerSocketFactory ssf = getServerSocketFactory(type);
             ServerSocket ss = ssf.createServerSocket(port);
