@@ -26,13 +26,14 @@ public class Server implements Runnable {
         //Start auditLog
         auditLog = new AuditLog();
         serverSocket = ss;
+
         newListener();
     }
 
     public void run() {
         try {
             database = new Database();
-            database.add("1",new MedicalRecord("Doctor", "Nurse", "Lund", "A+"));
+            database.add("Patrick", new MedicalRecord("Doctor", "n1", 1, "A+", "Patrick"));
             SSLSocket socket=(SSLSocket)serverSocket.accept();
             newListener();
             SSLSession session = socket.getSession();
@@ -71,10 +72,21 @@ public class Server implements Runnable {
             String clientMsg = null;
             while ((clientMsg = in.readLine()) != null) {
                 String[] parts = clientMsg.split(" ");
-                String returnMsg = "Command not recognized";
-//                if(parts[0].compareTo("read") == 0){
-//                    returnMsg = database.get(Integer.parseInt(parts[2])).toString();
-//                }
+                String returnMsg;
+                if(parts[0].compareTo("read") == 0){
+                    MedicalRecord mr = database.patientRecords(parts[1]).get(Integer.parseInt(parts[2]));
+                    returnMsg = checkReadPermission(subject, Character.getNumericValue(subject.charAt(5)), mr);
+
+                } else if (parts[0].compareTo("write") == 0){
+                    returnMsg = "You want to write";
+                } else if (parts[0].compareTo("delete") == 0){
+                    returnMsg = "You want to delete";
+                } else if (parts[0].compareTo("create") == 0){
+                    returnMsg = "You want to create";
+                } else {
+                    returnMsg = "That command is not recognized";
+                }
+
                 System.out.println("received '" + clientMsg + "' from client");
                 System.out.print("sending '" + returnMsg + "' to client...");
                 out.println(returnMsg);
@@ -143,4 +155,15 @@ public class Server implements Runnable {
         }
         return null;
     }
+
+    //Patient får läsa egna, nurse får läsa egna samt division, doctor får läsa samma som nurse, gov får läsa allt
+
+    private String checkReadPermission(String id, int division, MedicalRecord mr){
+        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g")){
+            return mr.toString();
+        } else {
+            return "You do not have clearance";
+        }
+    }
+
 }

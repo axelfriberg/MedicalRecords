@@ -50,12 +50,12 @@ public class Database {
             return null;
         }
     }
-    public ArrayList<MedicalRecord> divisionRecords(String div){
+    public ArrayList<MedicalRecord> divisionRecords(int div){
         recordList = new ArrayList<MedicalRecord>();
         iter = database.keySet().iterator();
         while(iter.hasNext()){
             for(MedicalRecord m: database.get(iter.next())){
-                if(m.getDivision().equals(div)){
+                if(m.getDivision() ==div){
                     recordList.add(m);
                 }
             }
