@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>server</OriginalElement>
+  <nodes>
+    <node x="359.0" y="406.0">server.Database</node>
+    <node x="-3.5" y="694.5">client.Client</node>
+    <node x="1012.0" y="86.0">server.Server</node>
+    <node x="1443.0" y="75.0">server.AuditLog</node>
+    <node x="-37.0" y="395.0">common.MedicalRecord</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="server.Server" target="server.Database">
+      <point x="-188.0" y="40.0" />
+      <point x="640.0" y="240.0" />
+      <point x="0.0" y="-114.0" />
+    </edge>
+    <edge source="server.Server" target="server.AuditLog">
+      <point x="0.0" y="-114.0" />
+      <point x="1200.0" y="0.0" />
+      <point x="1600.0" y="0.0" />
+      <point x="0.0" y="-125.0" />
+    </edge>
+    <edge source="server.Server" target="common.MedicalRecord">
+      <point x="-188.0" y="0.0" />
+      <point x="120.0" y="200.0" />
+      <point x="0.0" y="-125.0" />
+    </edge>
+    <edge source="server.Database" target="common.MedicalRecord">
+      <point x="-281.0" y="0.0" />
+      <point x="157.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.4738636363636364" x="795.9496402877697" y="347.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
