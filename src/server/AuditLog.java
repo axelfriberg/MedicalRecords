@@ -19,15 +19,24 @@ public class AuditLog {
         }
     }
 
-
-
-    public void printConnected(String userType) {
+    public void printConnected(String userId) {
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
-        out.println(timeStamp + " " + userType + " " + "is connected to database");
+        out.println(timeStamp + " " + userId + " " + "is connected to database");
         out.flush();
+    }
 
+    public void printDisconnected(String userId) {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
+        out.println(timeStamp + " " + userId + " " + "disconnected from database");
+        out.flush();
+    }
+    public void printAction(String userId, String actionType) {
+        String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
+
+        out.println(timeStamp + " " + userId + " " + actionType);
+        out.flush();
     }
 
 

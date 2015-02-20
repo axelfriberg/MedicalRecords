@@ -39,11 +39,11 @@ public class Server implements Runnable {
             SSLSession session = socket.getSession();
             X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
             String subject = cert.getSubjectDN().getName();
-
+            String userId = subject.substring(3,6);
             Character clearance = subject.charAt(3);
             numConnectedClients++;
-            String id = subject.substring(3,6);
-            auditLog.printConnected(id);
+
+            auditLog.printConnected(userId);
             System.out.println("client connected");
 
             System.out.println("client name (cert subject DN field): " + subject);
@@ -98,6 +98,7 @@ public class Server implements Runnable {
             socket.close();
             numConnectedClients--;
             System.out.println("client disconnected");
+            auditLog.printDisconnected(userId);
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
         } catch (IOException e) {
             System.out.println("client died: " + e.getMessage());
