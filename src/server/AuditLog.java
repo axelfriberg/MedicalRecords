@@ -10,16 +10,16 @@ import java.util.Calendar;
  * Created by johanmansson on 15-02-18.
  */
 public class AuditLog {
-
     PrintWriter writer;
 
-
-    try {
-        writer = new PrintWriter("auditlog.tex", "UTF-8");
-    } catch (FileNotFoundException e1) {
-        e1.printStackTrace();
-    } catch (UnsupportedEncodingException e1) {
-        e1.printStackTrace();
+    public AuditLog(){
+        try {
+            writer = new PrintWriter("auditlog.tex", "UTF-8");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 
 
