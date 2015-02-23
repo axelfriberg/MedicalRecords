@@ -169,4 +169,27 @@ public class Server implements Runnable {
         }
     }
 
+    private String checkWritePermission(String id, int division, MedicalRecord mr){
+        if (id.equals(mr.getNurse()) || id.equals(mr.getDoctor())){
+            return mr.toString();
+        } else {
+            return "You do not have clearance to write to this record";
+        }
+    }
+
+    private boolean checkCreatePermission(String doctorID, String patientID){
+        if (doctorID.charAt(0) == 'd') {
+            for (MedicalRecord mr : database.patientRecords(patientID)) {
+                if (mr.getDoctor().equals(doctorID)) {
+                    return true;
+                }
+            }
+        }
+        System.out.println("You do not have clearance to create a record for this patient");
+        return false;
+    }
+
+    private boolean checkDeletePermission(String id){
+        return id.equals("g");
+    }
 }
