@@ -97,7 +97,7 @@ public class Server implements Runnable {
                         returnMsg = "You are not authorized to delete";
                     }
                 } else if (parts[0].compareTo("create") == 0){
-                    if(checkCreatePermission(id, id)){
+                    if(checkCreatePermission(id, "patrick")){
                         returnMsg = "Creation ok";
                     } else {
                         returnMsg = "You do not have clearance to create a record for this patient";
