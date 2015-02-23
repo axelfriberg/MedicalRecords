@@ -25,7 +25,7 @@ public class Database {
 
 
     }
-    public MedicalRecord getMedicalRevord(int id){
+    public MedicalRecord getMedicalRecord(int id){
         recordList = new ArrayList<MedicalRecord>();
         iter = database.keySet().iterator();
         while(iter.hasNext()){
