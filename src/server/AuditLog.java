@@ -12,7 +12,7 @@ public class AuditLog {
 
     public AuditLog(){
         try {
-            FileOutputStream auditfile = new FileOutputStream("auditlog.tex", true);
+            FileOutputStream auditfile = new FileOutputStream("auditlog.txt", true);
             out = new PrintStream(auditfile);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
