@@ -63,11 +63,12 @@ public class Server implements Runnable {
                 System.out.println("I do not recognize you");
             }
 
-            System.out.println("Clearance level is: " + clearance);
+
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
 
             String id = subject.substring(3,6);
             //String subjectDiv = subject.substring(6); for future use, maybe
+            System.out.println("Clearance level is: " + clearance);
 
             PrintWriter out = null;
             BufferedReader in = null;
@@ -90,7 +91,7 @@ public class Server implements Runnable {
                         returnMsg = "You are not allowed to write to this record";
                     }
                 } else if (parts[0].compareTo("delete") == 0){
-                    if(checkDeletePermission(id)){
+                    if(checkDeletePermission(clearance)){
                         returnMsg = "Delete ok";
                     } else {
                         returnMsg = "You are not authorized to delete";
@@ -202,7 +203,7 @@ public class Server implements Runnable {
         return false;
     }
 
-    private boolean checkDeletePermission(String id){
-        return id.equals("g");
+    private boolean checkDeletePermission(Character clearance){
+        return clearance == 'g';
     }
 }
