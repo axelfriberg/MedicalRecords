@@ -23,6 +23,7 @@ public class Database {
         database.get(patient).add(m);
 
 
+
     }
     public MedicalRecord getMedicalRevord(int id){
         recordList = new ArrayList<MedicalRecord>();
