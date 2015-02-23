@@ -6,13 +6,20 @@ public class MedicalRecord {
     private int division;
     private String bloodType;
     private String patient;
+    private int id;
+    private static int idIndex;
 
     public MedicalRecord(String doctor, String nurse, int division, String bloodType, String patient){
+        setId();
         this.doctor = doctor;
         this.nurse = nurse;
         this.division = division;
         this.bloodType = bloodType;
         this.patient = patient;
+    }
+
+    private void setId() {
+        this.id = idIndex++;
     }
 
     public String toString(){
@@ -31,5 +38,9 @@ public class MedicalRecord {
 
     public String getPatient(){
         return patient;
+    }
+
+    public int getId(){
+        return id;
     }
 }

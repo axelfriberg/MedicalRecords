@@ -24,6 +24,19 @@ public class Database {
 
 
     }
+    public MedicalRecord getMedicalRevord(int id){
+        recordList = new ArrayList<MedicalRecord>();
+        iter = database.keySet().iterator();
+        while(iter.hasNext()){
+            for(MedicalRecord m : database.get(iter.next())){
+                if(m.getId() == id){
+                    return m;
+                }
+            }
+        }
+        System.out.println("No such Medical Record found");
+        return null;
+    }
 
     public void remove(String patient, MedicalRecord medicalRecord) {
         boolean removedRecord = false;
