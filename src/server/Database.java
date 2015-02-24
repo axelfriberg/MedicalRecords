@@ -43,7 +43,7 @@ public class Database {
         database.get(patient).remove(Integer.parseInt(index));
     }
 
-    public ArrayList<MedicalRecord> patientRecords(String patient) {
+    public ArrayList<MedicalRecord> getPatientRecords(String patient) {
         if (database.containsKey(patient)) {
             return database.get(patient);
         } else {

@@ -2,11 +2,8 @@ package server;
 import common.MedicalRecord;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.security.KeyStore;
-import java.util.ArrayList;
-import java.util.HashMap;
 import javax.net.*;
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
@@ -201,7 +198,7 @@ public class Server implements Runnable {
 
     private boolean checkCreatePermission(String doctorID, String patientID){
         if (doctorID.charAt(0) == 'd') {
-            for (MedicalRecord mr : database.patientRecords(patientID)) {
+            for (MedicalRecord mr : database.getPatientRecords(patientID)) {
                 if (mr.getDoctor().equals(doctorID)) {
                     return true;
                 }
@@ -215,6 +212,6 @@ public class Server implements Runnable {
     }
 
     private MedicalRecord getMr(String s1, String s2, Database db){
-            return db.patientRecords(s1).get(Integer.parseInt(s2));
+            return db.getPatientRecords(s1).get(Integer.parseInt(s2));
     }
 }
