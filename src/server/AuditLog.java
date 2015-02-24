@@ -1,6 +1,8 @@
 package server;
 
-import java.io.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -10,7 +12,7 @@ import java.util.Calendar;
 public class AuditLog {
     PrintStream out;
 
-    public AuditLog(){
+    public AuditLog() {
         try {
             FileOutputStream auditfile = new FileOutputStream("auditlog.txt", true);
             out = new PrintStream(auditfile);
@@ -32,21 +34,12 @@ public class AuditLog {
         out.println(timeStamp + " " + userId + " " + "disconnected from database");
         out.flush();
     }
+
     public void printAction(String userId, String actionType) {
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
         out.println(timeStamp + " " + userId + " " + actionType);
         out.flush();
     }
-
-
-
-
-
-
-
-
-
-
 
 }

@@ -1,7 +1,8 @@
 package client;
-import java.io.*;
+
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
+import java.io.*;
 import java.security.KeyStore;
 
 /*
@@ -45,7 +46,7 @@ public class Client {
                 SSLContext ctx = SSLContext.getInstance("TLS");
                 try {
                     ks.load(new FileInputStream(args[2]), args[3].toCharArray());  //Checks arg[2] for keystorename, args[3] for user pw
-                } catch (IOException ioe){
+                } catch (IOException ioe) {
                     System.out.println("Wrong password");
                     return;
                 }
@@ -57,7 +58,7 @@ public class Client {
             } catch (Exception e) {
                 throw new IOException(e.getMessage());
             }
-            SSLSocket socket = (SSLSocket)factory.createSocket(host, port);
+            SSLSocket socket = (SSLSocket) factory.createSocket(host, port);
             System.out.println("\nsocket before handshake:\n" + socket + "\n");
 
             /*
@@ -69,7 +70,7 @@ public class Client {
             socket.startHandshake();
 
             SSLSession session = socket.getSession();
-            X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
+            X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
             String subject = cert.getSubjectDN().getName();
             System.out.println("certificate name (subject DN field) on certificate received from server:\n" + subject + "\n");
             System.out.println("socket after handshake:\n" + socket + "\n");
@@ -79,7 +80,7 @@ public class Client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String msg;
-            for (;;) {
+            for (; ; ) {
                 System.out.print(">");
                 msg = read.readLine();
                 if (msg.equalsIgnoreCase("quit")) {
