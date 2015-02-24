@@ -7,3 +7,10 @@ openssl x509 -req -in signrequest.csr -CA CA.crt -CAkey CAprivkey.pem -out signe
 keytool -importcert -alias root -file CA.crt -keystore clientkeystore
 keytool -importcert -trustcacerts -alias client -file signedcert.crt -keystore clientkeystore
 $SHELL
+
+# How to create a new user, change ID in the code below to something that is logical for your needs. Must be run from files dir.
+# keytool -genkeypair -alias ID -keystore IDkeystore
+# keytool -certreq -alias ID -file IDsignrequest.csr -keystore IDkeystore
+# openssl x509 -req -in IDsignrequest.csr -CA CA.crt -CAkey CAprivkey.pem -out IDsignedcert.crt
+# keytool -importcert -alias root -file CA.crt -keystore IDkeystore
+# keytool -importcert -trustcacerts -alias ID -file IDsignedcert.crt -keystore IDkeystore
