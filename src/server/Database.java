@@ -25,10 +25,11 @@ public class Database {
 
 
     }
-    public MedicalRecord getMedicalRecord(String patient, int index){
+    public MedicalRecord getMedicalRecord(String patient, String index){
+        int i = Integer.parseInt(index);
         if(database.containsKey(patient)){
-            if(database.get(patient).size() > index){
-                return database.get(patient).get(index);
+            if(database.get(patient).size() > i){
+                return database.get(patient).get(i);
             } else{
                 System.out.println("No such Medical Records found for " + patient);
             }

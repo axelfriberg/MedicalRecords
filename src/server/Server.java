@@ -1,12 +1,13 @@
 package server;
+
 import common.MedicalRecord;
 
-import java.io.*;
-import java.net.*;
-import java.security.KeyStore;
-import javax.net.*;
+import javax.net.ServerSocketFactory;
 import javax.net.ssl.*;
 import javax.security.cert.X509Certificate;
+import java.io.*;
+import java.net.ServerSocket;
+import java.security.KeyStore;
 
 /**
  * Argument: port
@@ -16,9 +17,6 @@ public class Server implements Runnable {
     private static int numConnectedClients = 0;
     private Database database;
     private AuditLog auditLog;
-
-
-
 
 
     public Server(ServerSocket ss) throws IOException {
@@ -33,13 +31,13 @@ public class Server implements Runnable {
 
     public void run() {
         try {
-            SSLSocket socket=(SSLSocket)serverSocket.accept();
+            SSLSocket socket = (SSLSocket) serverSocket.accept();
             newListener();
             SSLSession session = socket.getSession();
-            X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
+            X509Certificate cert = (X509Certificate) session.getPeerCertificateChain()[0];
             System.out.println(session.getCipherSuite());
             String subject = cert.getSubjectDN().getName();
-            String userId = subject.substring(3,6);
+            String userId = subject.substring(3, 6);
             Character clearance = subject.charAt(3);
             numConnectedClients++;
 
@@ -49,13 +47,13 @@ public class Server implements Runnable {
             System.out.println("client name (cert subject DN field): " + subject);
 
             //For testing purposes
-            if (clearance == 'n'){
+            if (clearance == 'n') {
                 System.out.println("You are a nurse");
-            } else if (clearance == 'g'){
+            } else if (clearance == 'g') {
                 System.out.println("You are a government employee");
-            } else if (clearance == 'd'){
+            } else if (clearance == 'd') {
                 System.out.println("You are a doctor");
-            } else if (clearance == 'p'){
+            } else if (clearance == 'p') {
                 System.out.println("You are a patient");
             } else {
                 System.out.println("I do not recognize you");
@@ -64,7 +62,7 @@ public class Server implements Runnable {
 
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
 
-            String id = subject.substring(3,6);
+            String id = subject.substring(3, 6);
             //String subjectDiv = subject.substring(6); for future use, maybe
             System.out.println("Id is: " + id);
 
@@ -80,40 +78,56 @@ public class Server implements Runnable {
                 String[] parts = clientMsg.split(" ");
                 String returnMsg;
                 try {
-                    if (parts[0].compareTo("read") == 0) {
-                        MedicalRecord mr = database.getMedicalRecord(parts[1], Integer.parseInt(parts[2]));
+                    if (parts[0].equalsIgnoreCase("read")) {
+                        MedicalRecord mr = database.getMedicalRecord(parts[1], parts[2]);
                         returnMsg = checkReadPermission(id, mr);
-                    } else if (parts[0].compareTo("write") == 0) {
-                        if (checkWritePermission(id, getMr(parts[1], parts[2], database))) {
-                            returnMsg = "Write successful";
+                    } else if (parts[0].equalsIgnoreCase("write")) {
+                        if (checkWritePermission(id, database.getMedicalRecord(parts[1], parts[2]))) {
+                            if(parts.length == 4){
+                                database.getMedicalRecord(parts[1], parts[2]).changeDisease(parts[3]);
+                                returnMsg = "Write successful";
+                                auditLog.printAction(userId, returnMsg);
+                            } else{
+                                returnMsg = "Invalid entry";
+                                auditLog.printAction(userId, returnMsg);
+                            }
                         } else {
                             returnMsg = "You are not allowed to write to this record";
+                            auditLog.printAction(userId, returnMsg);
                         }
-                    } else if (parts[0].compareTo("delete") == 0) {
+                    } else if (parts[0].equalsIgnoreCase("delete")) {
                         if (checkDeletePermission(clearance)) {
                             database.remove(parts[1], parts[2]);
                             returnMsg = "Delete ok";
+                            auditLog.printAction(userId, returnMsg);
                         } else {
                             returnMsg = "You are not authorized to delete";
+                            auditLog.printAction(userId, returnMsg);
                         }
-                    } else if (parts[0].compareTo("create") == 0) {
+                    } else if (parts[0].equalsIgnoreCase("create")) {
                         if (checkCreatePermission(id, "patrick")) {
-                            if(parts.length == 6){
+                            if (parts.length == 6) {
                                 database.add(parts[5], new MedicalRecord(parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]));
                                 returnMsg = "Creation ok";
-                            } else{
-                                returnMsg =  "Invalid entry";
+                                auditLog.printAction(userId, returnMsg);
+                            } else {
+                                returnMsg = "Invalid entry";
+                                auditLog.printAction(userId, returnMsg);
                             }
                         } else {
                             returnMsg = "You do not have clearance to create a record for this patient";
+                            auditLog.printAction(userId, returnMsg);
                         }
                     } else {
                         returnMsg = "That command is not recognized";
+                        auditLog.printAction(userId, returnMsg);
                     }
-                } catch (IndexOutOfBoundsException ex){
+                } catch (IndexOutOfBoundsException ex) {
                     returnMsg = "That medical record does not exist";
-                } catch (NullPointerException ex2){
+                    auditLog.printAction(userId, returnMsg);
+                } catch (NullPointerException ex2) {
                     returnMsg = "That medical record does not exist";
+                    auditLog.printAction(userId, returnMsg);
                 }
 
                 System.out.println("received '" + clientMsg + "' from client");
@@ -151,7 +165,7 @@ public class Server implements Runnable {
         try {
             ServerSocketFactory ssf = getServerSocketFactory(type);
             ServerSocket ss = ssf.createServerSocket(port);
-            ((SSLServerSocket)ss).setNeedClientAuth(true); // enables client authentication
+            ((SSLServerSocket) ss).setNeedClientAuth(true); // enables client authentication
             new Server(ss);
         } catch (IOException e) {
             System.out.println("Unable to start server: " + e.getMessage());
@@ -186,44 +200,40 @@ public class Server implements Runnable {
         return null;
     }
 
-    private String checkReadPermission(String id, MedicalRecord mr){
-            int division = Character.getNumericValue(id.charAt(2));
-            if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g, ") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
-                return mr.toString();
-            } else {
-                return "You do not have clearance";
-            }
-
-    }
-
-    private boolean checkWritePermission(String id, MedicalRecord mr){
-        if (id.equals(mr.getNurse()) || id.equals(mr.getDoctor())){
-            return true;
+    private String checkReadPermission(String id, MedicalRecord mr) {
+        int division = Character.getNumericValue(id.charAt(2));
+        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g, ") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
+            return mr.toString();
         } else {
-            return false;
+            return "You do not have clearance";
         }
+
     }
 
-    private boolean checkCreatePermission(String doctorID, String patientID){
+    private boolean checkWritePermission(String id, MedicalRecord mr) {
+        return id.equals(mr.getNurse()) || id.equals(mr.getDoctor());
+    }
+
+    private boolean checkCreatePermission(String doctorID, String patientID) {
         if (doctorID.charAt(0) == 'd') {
-            if(database.checkPatient(patientID)) {
+            if (database.checkPatient(patientID)) {
                 for (MedicalRecord mr : database.getPatientRecords(patientID)) {
                     if (mr.getDoctor().equals(doctorID)) {
                         return true;
                     }
                 }
-            } else{
+            } else {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean checkDeletePermission(Character clearance){
+    private boolean checkDeletePermission(Character clearance) {
         return clearance == 'g';
     }
 
-    private MedicalRecord getMr(String s1, String s2, Database db){
-            return db.getPatientRecords(s1).get(Integer.parseInt(s2));
-    }
+//    private MedicalRecord getMr(String s1, String s2, Database db){
+//            return db.getPatientRecords(s1).get(Integer.parseInt(s2));
+//    }
 }
