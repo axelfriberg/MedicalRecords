@@ -26,8 +26,8 @@ public class Server implements Runnable {
         auditLog = new AuditLog();
         serverSocket = ss;
         database = new Database();
-        database.add("patrick", new MedicalRecord("d22", "n11", 1, "A+", "patrick"));
-        database.add("patrick", new MedicalRecord("d22", "n11", 1, "B+", "patrick"));
+//        database.add("patrick", new MedicalRecord("d43", "n11", 1, "A+", "patrick"));
+//        database.add("patrick", new MedicalRecord("d22", "n11", 1, "B+", "patrick"));
         newListener();
     }
 
@@ -98,7 +98,12 @@ public class Server implements Runnable {
                         }
                     } else if (parts[0].compareTo("create") == 0) {
                         if (checkCreatePermission(id, "patrick")) {
-                            returnMsg = "Creation ok";
+                            if(parts.length == 6){
+                                database.add(parts[5], new MedicalRecord(parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]));
+                                returnMsg = "Creation ok";
+                            } else{
+                                returnMsg =  "Invalid entry";
+                            }
                         } else {
                             returnMsg = "You do not have clearance to create a record for this patient";
                         }
@@ -201,10 +206,14 @@ public class Server implements Runnable {
 
     private boolean checkCreatePermission(String doctorID, String patientID){
         if (doctorID.charAt(0) == 'd') {
-            for (MedicalRecord mr : database.getPatientRecords(patientID)) {
-                if (mr.getDoctor().equals(doctorID)) {
-                    return true;
+            if(database.checkPatient(patientID)) {
+                for (MedicalRecord mr : database.getPatientRecords(patientID)) {
+                    if (mr.getDoctor().equals(doctorID)) {
+                        return true;
+                    }
                 }
+            } else{
+                return true;
             }
         }
         return false;

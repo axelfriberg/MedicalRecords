@@ -33,13 +33,16 @@ public class Database {
                 System.out.println("No such Medical Records found for " + patient);
             }
         } else {
-            System.out.println(patient + "Not found in database");
+            System.out.println(patient + " Not found in database");
         }
         return null;
     }
 
     public void remove(String patient, String index) {
         database.get(patient).remove(Integer.parseInt(index));
+    }
+    public boolean checkPatient(String patientID){
+        return database.containsKey(patientID);
     }
 
     public ArrayList<MedicalRecord> getPatientRecords(String patient) {
