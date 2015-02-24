@@ -24,8 +24,8 @@ public class Server implements Runnable {
         auditLog = new AuditLog();
         serverSocket = ss;
         database = new Database();
-//        database.add("patrick", new MedicalRecord("d43", "n11", 1, "A+", "patrick"));
-//        database.add("patrick", new MedicalRecord("d22", "n11", 1, "B+", "patrick"));
+        database.add("patrick", new MedicalRecord("d43", "n11", 1, "Injured foot", "patrick"));
+        database.add("oskar", new MedicalRecord("d22", "n11", 1, "Flu", "oskar"));
         newListener();
     }
 
@@ -46,24 +46,9 @@ public class Server implements Runnable {
 
             System.out.println("client name (cert subject DN field): " + subject);
 
-            //For testing purposes
-            if (clearance == 'n') {
-                System.out.println("You are a nurse");
-            } else if (clearance == 'g') {
-                System.out.println("You are a government employee");
-            } else if (clearance == 'd') {
-                System.out.println("You are a doctor");
-            } else if (clearance == 'p') {
-                System.out.println("You are a patient");
-            } else {
-                System.out.println("I do not recognize you");
-            }
-
-
             System.out.println(numConnectedClients + " concurrent connection(s)\n");
 
             String id = subject.substring(3, 6);
-            //String subjectDiv = subject.substring(6); for future use, maybe
             System.out.println("Id is: " + id);
 
             PrintWriter out = null;
@@ -73,7 +58,6 @@ public class Server implements Runnable {
 
             String clientMsg = null;
 
-            //use command patrick 0 for testing
             while ((clientMsg = in.readLine()) != null) {
                 String[] parts = clientMsg.split(" ");
                 String returnMsg;
@@ -233,7 +217,4 @@ public class Server implements Runnable {
         return clearance == 'g';
     }
 
-//    private MedicalRecord getMr(String s1, String s2, Database db){
-//            return db.getPatientRecords(s1).get(Integer.parseInt(s2));
-//    }
 }

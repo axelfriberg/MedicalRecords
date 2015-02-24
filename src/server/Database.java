@@ -21,10 +21,8 @@ public class Database {
             database.put(patient, new ArrayList<MedicalRecord>());
         }
         database.get(patient).add(m);
-
-
-
     }
+
     public MedicalRecord getMedicalRecord(String patient, String index){
         int i = Integer.parseInt(index);
         if(database.containsKey(patient)){
