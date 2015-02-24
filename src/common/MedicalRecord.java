@@ -6,11 +6,8 @@ public class MedicalRecord {
     private int division;
     private String bloodType;
     private String patient;
-    private int id;
-    private static int idIndex;
 
     public MedicalRecord(String doctor, String nurse, int division, String bloodType, String patient){
-        setId();
         this.doctor = doctor;
         this.nurse = nurse;
         this.division = division;
@@ -18,9 +15,6 @@ public class MedicalRecord {
         this.patient = patient;
     }
 
-    private void setId() {
-        this.id = idIndex++;
-    }
 
     public String toString(){
         return "Doctor: " + doctor + " Division: " + division + " Nurse: " + nurse + " Blood Type: " + bloodType;
@@ -40,7 +34,4 @@ public class MedicalRecord {
         return patient;
     }
 
-    public int getId(){
-        return id;
-    }
 }

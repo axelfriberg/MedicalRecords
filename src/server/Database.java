@@ -25,17 +25,16 @@ public class Database {
 
 
     }
-    public MedicalRecord getMedicalRecord(int id){
-        recordList = new ArrayList<MedicalRecord>();
-        iter = database.keySet().iterator();
-        while(iter.hasNext()){
-            for(MedicalRecord m : database.get(iter.next())){
-                if(m.getId() == id){
-                    return m;
-                }
+    public MedicalRecord getMedicalRecord(String patient, int index){
+        if(database.containsKey(patient)){
+            if(database.get(patient).size() > index){
+                return database.get(patient).get(index);
+            } else{
+                System.out.println("No such Medical Records found for " + patient);
             }
+        } else {
+            System.out.println(patient + "Not found in database");
         }
-        System.out.println("No such Medical Record found");
         return null;
     }
 

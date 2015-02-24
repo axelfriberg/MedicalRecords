@@ -37,6 +37,7 @@ public class Server implements Runnable {
             newListener();
             SSLSession session = socket.getSession();
             X509Certificate cert = (X509Certificate)session.getPeerCertificateChain()[0];
+            System.out.println(session.getCipherSuite());
             String subject = cert.getSubjectDN().getName();
             String userId = subject.substring(3,6);
             Character clearance = subject.charAt(3);
@@ -80,7 +81,7 @@ public class Server implements Runnable {
                 String returnMsg;
                 try {
                     if (parts[0].compareTo("read") == 0) {
-                        MedicalRecord mr = getMr(parts[1], parts[2], database);
+                        MedicalRecord mr = database.getMedicalRecord(parts[1], Integer.parseInt(parts[2]));
                         returnMsg = checkReadPermission(id, mr);
                     } else if (parts[0].compareTo("write") == 0) {
                         if (checkWritePermission(id, getMr(parts[1], parts[2], database))) {
@@ -105,6 +106,8 @@ public class Server implements Runnable {
                         returnMsg = "That command is not recognized";
                     }
                 } catch (IndexOutOfBoundsException ex){
+                    returnMsg = "That medical record does not exist";
+                } catch (NullPointerException ex2){
                     returnMsg = "That medical record does not exist";
                 }
 
