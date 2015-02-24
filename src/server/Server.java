@@ -30,6 +30,7 @@ public class Server implements Runnable {
         serverSocket = ss;
         database = new Database();
         database.add("patrick", new MedicalRecord("d22", "n11", 1, "A+", "patrick"));
+        database.add("patrick", new MedicalRecord("d22", "n11", 1, "B+", "patrick"));
         newListener();
     }
 
@@ -80,30 +81,34 @@ public class Server implements Runnable {
             while ((clientMsg = in.readLine()) != null) {
                 String[] parts = clientMsg.split(" ");
                 String returnMsg;
-                if(parts[0].compareTo("read") == 0){
-                    MedicalRecord mr = getMr(parts[1], parts[2], database);
-                    returnMsg = checkReadPermission(id, mr);
-                } else if (parts[0].compareTo("write") == 0){
-                    if(checkWritePermission(id, getMr(parts[1], parts[2], database))){
-                        returnMsg = "Write successful";
+                try {
+                    if (parts[0].compareTo("read") == 0) {
+                        MedicalRecord mr = getMr(parts[1], parts[2], database);
+                        returnMsg = checkReadPermission(id, mr);
+                    } else if (parts[0].compareTo("write") == 0) {
+                        if (checkWritePermission(id, getMr(parts[1], parts[2], database))) {
+                            returnMsg = "Write successful";
+                        } else {
+                            returnMsg = "You are not allowed to write to this record";
+                        }
+                    } else if (parts[0].compareTo("delete") == 0) {
+                        if (checkDeletePermission(clearance)) {
+                            database.remove(parts[1], parts[2]);
+                            returnMsg = "Delete ok";
+                        } else {
+                            returnMsg = "You are not authorized to delete";
+                        }
+                    } else if (parts[0].compareTo("create") == 0) {
+                        if (checkCreatePermission(id, "patrick")) {
+                            returnMsg = "Creation ok";
+                        } else {
+                            returnMsg = "You do not have clearance to create a record for this patient";
+                        }
                     } else {
-                        returnMsg = "You are not allowed to write to this record";
+                        returnMsg = "That command is not recognized";
                     }
-                } else if (parts[0].compareTo("delete") == 0){
-                    if(checkDeletePermission(clearance)){
-                        database.patientRecords(parts[1]).remove(parts[2]);
-                        returnMsg = "Delete ok";
-                    } else {
-                        returnMsg = "You are not authorized to delete";
-                    }
-                } else if (parts[0].compareTo("create") == 0){
-                    if(checkCreatePermission(id, "patrick")){
-                        returnMsg = "Creation ok";
-                    } else {
-                        returnMsg = "You do not have clearance to create a record for this patient";
-                    }
-                } else {
-                    returnMsg = "That command is not recognized";
+                } catch (IndexOutOfBoundsException ex){
+                    returnMsg = "That medical record does not exist";
                 }
 
                 System.out.println("received '" + clientMsg + "' from client");
@@ -177,12 +182,13 @@ public class Server implements Runnable {
     }
 
     private String checkReadPermission(String id, MedicalRecord mr){
-        int division = Character.getNumericValue(id.charAt(2));
-        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g, ") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())){
-            return mr.toString();
-        } else {
-            return "You do not have clearance";
-        }
+            int division = Character.getNumericValue(id.charAt(2));
+            if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g, ") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
+                return mr.toString();
+            } else {
+                return "You do not have clearance";
+            }
+
     }
 
     private boolean checkWritePermission(String id, MedicalRecord mr){
@@ -209,6 +215,6 @@ public class Server implements Runnable {
     }
 
     private MedicalRecord getMr(String s1, String s2, Database db){
-        return db.patientRecords(s1).get(Integer.parseInt(s2));
+            return db.patientRecords(s1).get(Integer.parseInt(s2));
     }
 }

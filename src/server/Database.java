@@ -39,23 +39,8 @@ public class Database {
         return null;
     }
 
-    public void remove(String patient, MedicalRecord medicalRecord) {
-        boolean removedRecord = false;
-        if (database.containsKey(patient)) {
-            for (MedicalRecord m : database.get(patient)) {
-                if (medicalRecord == m) {
-                    removedRecord = true;
-                    database.get(patient).remove(m);
-                }
-            }
-            if (removedRecord) {
-                System.out.println("Medical Record has successfully been removed");
-            } else {
-                System.out.println("No such Medical Record found");
-            }
-        } else {
-            System.out.println("No such patient found");
-        }
+    public void remove(String patient, String index) {
+        database.get(patient).remove(Integer.parseInt(index));
     }
 
     public ArrayList<MedicalRecord> patientRecords(String patient) {
