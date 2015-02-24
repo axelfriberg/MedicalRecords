@@ -23,13 +23,14 @@ public class Database {
         database.get(patient).add(m);
 
 
-    }
 
-    public MedicalRecord getMedicalRecord(String patient, int index) {
-        if (database.containsKey(patient)) {
-            if (database.get(patient).size() > index) {
-                return database.get(patient).get(index);
-            } else {
+    }
+    public MedicalRecord getMedicalRecord(String patient, String index){
+        int i = Integer.parseInt(index);
+        if(database.containsKey(patient)){
+            if(database.get(patient).size() > i){
+                return database.get(patient).get(i);
+            } else{
                 System.out.println("No such Medical Records found for " + patient);
             }
         } else {
@@ -41,8 +42,7 @@ public class Database {
     public void remove(String patient, String index) {
         database.get(patient).remove(Integer.parseInt(index));
     }
-
-    public boolean checkPatient(String patientID) {
+    public boolean checkPatient(String patientID){
         return database.containsKey(patientID);
     }
 
@@ -108,4 +108,5 @@ public class Database {
             return null;
         }
     }
+
 }

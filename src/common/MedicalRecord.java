@@ -4,27 +4,25 @@ public class MedicalRecord {
     private String doctor;
     private String nurse;
     private int division;
-    private String bloodType;
+    private String disease;
     private String patient;
 
-    public MedicalRecord(String doctor, String nurse, int division, String bloodType, String patient) {
+    public MedicalRecord(String doctor, String nurse, int division, String disease, String patient){
         this.doctor = doctor;
         this.nurse = nurse;
         this.division = division;
-        this.bloodType = bloodType;
+        this.disease = disease;
         this.patient = patient;
     }
 
 
-    public String toString() {
-        return "Doctor: " + doctor + " Division: " + division + " Nurse: " + nurse + " Blood Type: " + bloodType;
+    public String toString(){
+        return "Doctor: " + doctor + " Division: " + division + " Nurse: " + nurse + " Disease: " + disease;
     }
-
-    public int getDivision() {
+    public int getDivision(){
         return division;
     }
-
-    public String getNurse() {
+    public String getNurse(){
         return nurse;
     }
 
@@ -32,8 +30,10 @@ public class MedicalRecord {
         return doctor;
     }
 
-    public String getPatient() {
+    public String getPatient(){
         return patient;
     }
+    public void changeDisease(String newDisease){ disease = newDisease;
 
+    }
 }

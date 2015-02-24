@@ -79,11 +79,16 @@ public class Server implements Runnable {
                 String returnMsg;
                 try {
                     if (parts[0].equalsIgnoreCase("read")) {
-                        MedicalRecord mr = database.getMedicalRecord(parts[1], Integer.parseInt(parts[2]));
+                        MedicalRecord mr = database.getMedicalRecord(parts[1], parts[2]);
                         returnMsg = checkReadPermission(id, mr);
                     } else if (parts[0].equalsIgnoreCase("write")) {
-                        if (checkWritePermission(id, getMr(parts[1], parts[2], database))) {
-                            returnMsg = "Write successful";
+                        if (checkWritePermission(id, database.getMedicalRecord(parts[1], parts[2]))) {
+                            if(parts.length == 4){
+                                database.getMedicalRecord(parts[1], parts[2]).changeDisease(parts[3]);
+                                returnMsg = "Write successful";
+                            } else{
+                                returnMsg = "Invalid entry";
+                            }
                         } else {
                             returnMsg = "You are not allowed to write to this record";
                         }
@@ -217,7 +222,7 @@ public class Server implements Runnable {
         return clearance == 'g';
     }
 
-    private MedicalRecord getMr(String s1, String s2, Database db) {
-        return db.getPatientRecords(s1).get(Integer.parseInt(s2));
-    }
+//    private MedicalRecord getMr(String s1, String s2, Database db){
+//            return db.getPatientRecords(s1).get(Integer.parseInt(s2));
+//    }
 }
