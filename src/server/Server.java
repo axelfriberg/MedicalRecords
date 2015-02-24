@@ -83,7 +83,7 @@ public class Server implements Runnable {
                 String returnMsg;
                 if(parts[0].compareTo("read") == 0){
                     MedicalRecord mr = database.patientRecords(parts[1]).get(Integer.parseInt(parts[2]));
-                    returnMsg = checkReadPermission(subject, Character.getNumericValue(subject.charAt(5)), mr);
+                    returnMsg = checkReadPermission(id, Character.getNumericValue(subject.charAt(5)), mr);
                 } else if (parts[0].compareTo("write") == 0){
                     if(checkWritePermission(id, database.patientRecords(parts[1]).get(Integer.parseInt(parts[2])))){
                         returnMsg = "Write successful";
@@ -177,7 +177,7 @@ public class Server implements Runnable {
     }
 
     private String checkReadPermission(String id, int division, MedicalRecord mr){
-        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g")){
+        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())){
             return mr.toString();
         } else {
             return "You do not have clearance";
