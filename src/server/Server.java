@@ -86,37 +86,48 @@ public class Server implements Runnable {
                             if(parts.length == 4){
                                 database.getMedicalRecord(parts[1], parts[2]).changeDisease(parts[3]);
                                 returnMsg = "Write successful";
+                                auditLog.printAction(userId, returnMsg);
                             } else{
                                 returnMsg = "Invalid entry";
+                                auditLog.printAction(userId, returnMsg);
                             }
                         } else {
                             returnMsg = "You are not allowed to write to this record";
+                            auditLog.printAction(userId, returnMsg);
                         }
                     } else if (parts[0].equalsIgnoreCase("delete")) {
                         if (checkDeletePermission(clearance)) {
                             database.remove(parts[1], parts[2]);
                             returnMsg = "Delete ok";
+                            auditLog.printAction(userId, returnMsg);
                         } else {
                             returnMsg = "You are not authorized to delete";
+                            auditLog.printAction(userId, returnMsg);
                         }
                     } else if (parts[0].equalsIgnoreCase("create")) {
                         if (checkCreatePermission(id, "patrick")) {
                             if (parts.length == 6) {
                                 database.add(parts[5], new MedicalRecord(parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]));
                                 returnMsg = "Creation ok";
+                                auditLog.printAction(userId, returnMsg);
                             } else {
                                 returnMsg = "Invalid entry";
+                                auditLog.printAction(userId, returnMsg);
                             }
                         } else {
                             returnMsg = "You do not have clearance to create a record for this patient";
+                            auditLog.printAction(userId, returnMsg);
                         }
                     } else {
                         returnMsg = "That command is not recognized";
+                        auditLog.printAction(userId, returnMsg);
                     }
                 } catch (IndexOutOfBoundsException ex) {
                     returnMsg = "That medical record does not exist";
+                    auditLog.printAction(userId, returnMsg);
                 } catch (NullPointerException ex2) {
                     returnMsg = "That medical record does not exist";
+                    auditLog.printAction(userId, returnMsg);
                 }
 
                 System.out.println("received '" + clientMsg + "' from client");
