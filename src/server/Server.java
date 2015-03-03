@@ -202,7 +202,7 @@ public class Server implements Runnable {
 
     private String checkReadPermission(String id, MedicalRecord mr) {
         int division = Character.getNumericValue(id.charAt(2));
-        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g, ") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
+        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g00") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
             return mr.toString();
         } else {
             return "You do not have clearance";
