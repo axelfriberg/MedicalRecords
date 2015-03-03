@@ -28,10 +28,10 @@ public class Server implements Runnable {
         auditLog = new AuditLog();
         serverSocket = ss;
         database = new Database();
-        database.add("patrick", new MedicalRecord("d43", "n11", 1, "Injured foot", "patrick"));
-        database.add("oskar", new MedicalRecord("d22", "n11", 1, "Flu", "oskar"));
-        database.add("anna", new MedicalRecord("d22", "n11", 1, "Flu", "anna"));
-        database.add("sara", new MedicalRecord("d22", "n11", 1, "Flu", "sara"));
+        database.add("patrick", new MedicalRecord("d43", "n11", 1, "Injured foot", "patrick", "p10"));
+        database.add("oskar", new MedicalRecord("d22", "n22", 1, "Flu", "oskar", "p20"));
+        database.add("anna", new MedicalRecord("d22", "n11", 1, "Flu", "anna", "p30"));
+        database.add("sara", new MedicalRecord("d22", "n32", 2, "Flu", "sara", "p40"));
         newListener();
     }
 
@@ -99,8 +99,8 @@ public class Server implements Runnable {
                         }
                     } else if (parts[0].equalsIgnoreCase("create")) {
                         if (checkCreatePermission(id, parts[3])) {
-                            if (parts.length == 4) {
-                                database.add(parts[3], new MedicalRecord(id, parts[1], Integer.parseInt(id.substring(2,3)), parts[2], parts[3]));
+                            if (parts.length == 5) {
+                                database.add(parts[3], new MedicalRecord(id, parts[1], Integer.parseInt(id.substring(2,3)), parts[2], parts[3], parts[4]));
                                 returnMsg = "Creation ok";
                                 auditLog.printAction(userId, returnMsg);
                             } else {
@@ -202,7 +202,7 @@ public class Server implements Runnable {
 
     private String checkReadPermission(String id, MedicalRecord mr) {
         int division = Character.getNumericValue(id.charAt(2));
-        if (division == mr.getDivision() || id.equals(mr.getPatient()) || id.equals("g00") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
+        if (division == mr.getDivision() || id.equals(mr.getPatientID()) || id.equals("g00") || id.equals(mr.getDoctor()) || id.equals(mr.getNurse())) {
             return mr.toString();
         } else {
             return "You do not have clearance";
@@ -214,10 +214,10 @@ public class Server implements Runnable {
         return id.equals(mr.getNurse()) || id.equals(mr.getDoctor());
     }
 
-    private boolean checkCreatePermission(String doctorID, String patientID) {
+    private boolean checkCreatePermission(String doctorID, String patientName) {
         if (doctorID.charAt(0) == 'd') {
-            if (database.checkPatient(patientID)) {
-                for (MedicalRecord mr : database.getPatientRecords(patientID)) {
+            if (database.checkPatient(patientName)) {
+                for (MedicalRecord mr : database.getPatientRecords(patientName)) {
                     if (mr.getDoctor().equals(doctorID)) {
                         return true;
                     }

@@ -5,14 +5,16 @@ public class MedicalRecord {
     private String nurse;
     private int division;
     private String disease;
-    private String patient;
+    private String patientName;
+    private String patientID;
 
-    public MedicalRecord(String doctor, String nurse, int division, String disease, String patient){
+    public MedicalRecord(String doctor, String nurse, int division, String disease, String patientName, String patientID){
         this.doctor = doctor;
         this.nurse = nurse;
         this.division = division;
         this.disease = disease;
-        this.patient = patient;
+        this.patientName = patientName;
+        this.patientID = patientID;
     }
 
 
@@ -22,6 +24,7 @@ public class MedicalRecord {
     public int getDivision(){
         return division;
     }
+
     public String getNurse(){
         return nurse;
     }
@@ -30,10 +33,11 @@ public class MedicalRecord {
         return doctor;
     }
 
-    public String getPatient(){
-        return patient;
-    }
-    public void changeDisease(String newDisease){ disease = newDisease;
+    public String getPatientName(){ return patientName; }
 
-    }
+    public String getPatientID(){ return patientID;}
+
+    public void changeDisease(String newDisease){ disease = newDisease; }
+
+
 }

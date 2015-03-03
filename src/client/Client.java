@@ -76,15 +76,16 @@ public class Client {
             System.out.println("socket after handshake:\n" + socket + "\n");
             System.out.println("secure connection established\n\n");
             System.out.println("Available commands:\n " +
-                    "read   patientID recordNbr\n " +
-                    "create nurseID   Disease   patientID\n " +
-                    "delete patientID recordNbr\n " +
-                    "write  patientID recordNbr Disease");
+                    "read   patientName recordNbr\n " +
+                    "create nurseID     Disease   patientName PatientID \n " +
+                    "delete patientName recordNbr\n " +
+                    "write  patientName recordNbr Disease");
             System.out.println("Examples:\n " +
-                    "patientID - patrick\n " +
-                    "nurseID   - n12\n " +
-                    "recordNbr - 1\n " +
-                    "Disease   - Flu\n ");
+                    "patientID   - p10\n " +
+                    "patientName - patrick\n " +
+                    "nurseID     - n12\n " +
+                    "recordNbr   - 1\n " +
+                    "Disease     - Flu\n ");
 
 
 
