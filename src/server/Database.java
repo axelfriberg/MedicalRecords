@@ -6,16 +6,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+/**
+ *
+ */
 public class Database {
     private HashMap<String, ArrayList<MedicalRecord>> database;
     private ArrayList<MedicalRecord> recordList;
     Iterator<String> iter;
 
+    /**
+     *
+     */
     public Database() {
         database = new HashMap<String, ArrayList<MedicalRecord>>();
 
     }
 
+    /**
+     *
+     * @param patient
+     * @param m
+     */
     public void add(String patient, MedicalRecord m) {
         if (!database.containsKey(patient)) {
             database.put(patient, new ArrayList<MedicalRecord>());
@@ -23,6 +34,12 @@ public class Database {
         database.get(patient).add(m);
     }
 
+    /**
+     *
+     * @param patient
+     * @param index
+     * @return
+     */
     public MedicalRecord getMedicalRecord(String patient, String index){
         int i = Integer.parseInt(index);
         if(database.containsKey(patient)){
@@ -37,13 +54,29 @@ public class Database {
         return null;
     }
 
+    /**
+     *
+     * @param patient
+     * @param index
+     */
     public void remove(String patient, String index) {
         database.get(patient).remove(Integer.parseInt(index));
     }
+
+    /**
+     *
+     * @param patientID
+     * @return
+     */
     public boolean checkPatient(String patientID){
         return database.containsKey(patientID);
     }
 
+    /**
+     *
+     * @param patient
+     * @return
+     */
     public ArrayList<MedicalRecord> getPatientRecords(String patient) {
         if (database.containsKey(patient)) {
             return database.get(patient);
@@ -53,6 +86,11 @@ public class Database {
         }
     }
 
+    /**
+     *
+     * @param div
+     * @return
+     */
     public ArrayList<MedicalRecord> divisionRecords(int div) {
         recordList = new ArrayList<MedicalRecord>();
         iter = database.keySet().iterator();
@@ -71,6 +109,11 @@ public class Database {
         }
     }
 
+    /**
+     *
+     * @param nurse
+     * @return
+     */
     public ArrayList<MedicalRecord> nurseRecords(String nurse) {
         recordList = new ArrayList<MedicalRecord>();
         iter = database.keySet().iterator();
@@ -89,6 +132,11 @@ public class Database {
         }
     }
 
+    /**
+     *
+     * @param doctor
+     * @return
+     */
     public ArrayList<MedicalRecord> doctorRecords(String doctor) {
         recordList = new ArrayList<MedicalRecord>();
         iter = database.keySet().iterator();

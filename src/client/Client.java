@@ -5,7 +5,7 @@ import javax.security.cert.X509Certificate;
 import java.io.*;
 import java.security.KeyStore;
 
-/*
+/**
  * This example shows how to set up a key manager to perform client
  * authentication.
  *
@@ -75,6 +75,18 @@ public class Client {
             System.out.println("certificate name (subject DN field) on certificate received from server:\n" + subject + "\n");
             System.out.println("socket after handshake:\n" + socket + "\n");
             System.out.println("secure connection established\n\n");
+            System.out.println("Available commands:\n " +
+                    "read   patientID recordNbr\n " +
+                    "create nurseID   Disease   patientID\n " +
+                    "delete patientID recordNbr\n " +
+                    "write  patientID recordNbr Disease");
+            System.out.println("Examples:\n " +
+                    "patientID - patrick\n " +
+                    "nurseID   - n12\n " +
+                    "recordNbr - 1\n " +
+                    "Disease   - Flu\n ");
+
+
 
             BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);

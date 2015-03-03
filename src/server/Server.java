@@ -18,7 +18,11 @@ public class Server implements Runnable {
     private Database database;
     private AuditLog auditLog;
 
-
+    /**
+     *
+     * @param ss
+     * @throws IOException
+     */
     public Server(ServerSocket ss) throws IOException {
         //Start auditLog
         auditLog = new AuditLog();
@@ -31,6 +35,9 @@ public class Server implements Runnable {
         newListener();
     }
 
+    /**
+     *
+     */
     public void run() {
         try {
             SSLSocket socket = (SSLSocket) serverSocket.accept();
@@ -91,9 +98,9 @@ public class Server implements Runnable {
                             auditLog.printAction(userId, returnMsg);
                         }
                     } else if (parts[0].equalsIgnoreCase("create")) {
-                        if (checkCreatePermission(id, "patrick")) {
-                            if (parts.length == 6) {
-                                database.add(parts[5], new MedicalRecord(parts[1], parts[2], Integer.parseInt(parts[3]), parts[4], parts[5]));
+                        if (checkCreatePermission(id, parts[3])) {
+                            if (parts.length == 4) {
+                                database.add(parts[3], new MedicalRecord(id, parts[1], Integer.parseInt(id.substring(2,3)), parts[2], parts[3]));
                                 returnMsg = "Creation ok";
                                 auditLog.printAction(userId, returnMsg);
                             } else {
@@ -136,10 +143,17 @@ public class Server implements Runnable {
         }
     }
 
+    /**
+     *
+     */
     private void newListener() {
         (new Thread(this)).start();
     } // calls run()
 
+    /**
+     *
+     * @param args
+     */
     public static void main(String args[]) {
         System.out.println("\nserver Started\n");
         int port = -1;
