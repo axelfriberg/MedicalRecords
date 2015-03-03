@@ -6,8 +6,7 @@ import java.io.*;
 import java.security.KeyStore;
 
 /**
- * This example shows how to set up a key manager to perform client
- * authentication.
+ * The client software for the EIT060 project 2.
  *
  * This program assumes that the client is not inside a firewall.
  * The application can be modified to connect to a server outside
@@ -23,7 +22,7 @@ public class Client {
         for (int i = 0; i < args.length; i++) {
             System.out.println("args[" + i + "] = " + args[i]);
         }
-        if (args.length < 3) { //args should be localhost, portnbr, name of keystore
+        if (args.length < 3) {
             System.out.println("USAGE: java client host port");
             System.exit(-1);
         }

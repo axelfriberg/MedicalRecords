@@ -18,25 +18,49 @@ public class MedicalRecord {
     }
 
 
+    /**
+     * Returns a string of all the info in the medical record.
+     *
+     * @return String of the medical record
+     */
     public String toString(){
         return "Doctor: " + doctor + " Division: " + division + " Nurse: " + nurse + " Disease: " + disease;
     }
+
+    /**
+     * Returns the division associated with the medical record.
+     * @return The division
+     */
     public int getDivision(){
         return division;
     }
 
+    /**
+     * Returns the nurse associated with the medical record.
+     * @return The nurse
+     */
     public String getNurse(){
         return nurse;
     }
 
+    /**
+     * Returns the doctor associated with the medical record.
+     * @return The doctor
+     */
     public String getDoctor() {
         return doctor;
     }
 
-    public String getPatientName(){ return patientName; }
-
+    /**
+     * Returns the id of the patient associated with the medical record.
+     * @return The id
+     */
     public String getPatientID(){ return patientID;}
 
+    /**
+     * Changes the disease of a patient.
+     * @param newDisease
+     */
     public void changeDisease(String newDisease){ disease = newDisease; }
 
 
