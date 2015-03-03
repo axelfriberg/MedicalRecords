@@ -26,6 +26,8 @@ public class Server implements Runnable {
         database = new Database();
         database.add("patrick", new MedicalRecord("d43", "n11", 1, "Injured foot", "patrick"));
         database.add("oskar", new MedicalRecord("d22", "n11", 1, "Flu", "oskar"));
+        database.add("anna", new MedicalRecord("d22", "n11", 1, "Flu", "anna"));
+        database.add("sara", new MedicalRecord("d22", "n11", 1, "Flu", "sara"));
         newListener();
     }
 
