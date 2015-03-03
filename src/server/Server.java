@@ -10,7 +10,8 @@ import java.net.ServerSocket;
 import java.security.KeyStore;
 
 /**
- * Argument: port
+ * The Server software for the EIT060 project 2.
+ * Arguments: port
  */
 public class Server implements Runnable {
     private ServerSocket serverSocket = null;
@@ -19,7 +20,7 @@ public class Server implements Runnable {
     private AuditLog auditLog;
 
     /**
-     *
+     * Initiates the database & log. Also creates a scenario of medical records
      * @param ss
      * @throws IOException
      */
@@ -29,15 +30,13 @@ public class Server implements Runnable {
         serverSocket = ss;
         database = new Database();
         database.add("patrick", new MedicalRecord("d43", "n11", 1, "Injured foot", "patrick", "p10"));
-        database.add("oskar", new MedicalRecord("d22", "n22", 1, "Flu", "oskar", "p20"));
-        database.add("anna", new MedicalRecord("d22", "n11", 1, "Flu", "anna", "p30"));
+        database.add("oskar", new MedicalRecord("d22", "n22", 2, "Flu", "oskar", "p20"));
+        database.add("anna", new MedicalRecord("d22", "n11", 2, "Flu", "anna", "p30"));
         database.add("sara", new MedicalRecord("d22", "n32", 2, "Flu", "sara", "p40"));
         newListener();
     }
 
-    /**
-     *
-     */
+
     public void run() {
         try {
             SSLSocket socket = (SSLSocket) serverSocket.accept();
@@ -144,14 +143,14 @@ public class Server implements Runnable {
     }
 
     /**
-     *
+     *  Creates a new server thread that listens for additional client connections
      */
     private void newListener() {
         (new Thread(this)).start();
     } // calls run()
 
     /**
-     *
+     *  Starts the server, and sets up the server socket.
      * @param args
      */
     public static void main(String args[]) {

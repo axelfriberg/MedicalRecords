@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- *
+ *  A basic database for storage of medical records
  */
 public class Database {
     private HashMap<String, ArrayList<MedicalRecord>> database;
@@ -23,7 +23,7 @@ public class Database {
     }
 
     /**
-     *
+     * Adds a medical to the specified patient
      * @param patient
      * @param m
      */
@@ -35,10 +35,10 @@ public class Database {
     }
 
     /**
-     *
+     * Retrieves a medical record from the specified patient and index
      * @param patient
      * @param index
-     * @return
+     * @return MedicalRecord
      */
     public MedicalRecord getMedicalRecord(String patient, String index){
         int i = Integer.parseInt(index);
@@ -55,7 +55,7 @@ public class Database {
     }
 
     /**
-     *
+     * Removes a medical record from the specified patient and index
      * @param patient
      * @param index
      */
@@ -64,93 +64,24 @@ public class Database {
     }
 
     /**
-     *
+     * Checks if a patient exists in the database or not.
      * @param patientID
-     * @return
+     * @return boolean
      */
     public boolean checkPatient(String patientID){
         return database.containsKey(patientID);
     }
 
     /**
-     *
+     * Returns a list of medical record for the specified patient.
      * @param patient
-     * @return
+     * @return ArrayList<MedicalRecord>
      */
     public ArrayList<MedicalRecord> getPatientRecords(String patient) {
         if (database.containsKey(patient)) {
             return database.get(patient);
         } else {
             System.out.println("No such patient found");
-            return null;
-        }
-    }
-
-    /**
-     *
-     * @param div
-     * @return
-     */
-    public ArrayList<MedicalRecord> divisionRecords(int div) {
-        recordList = new ArrayList<MedicalRecord>();
-        iter = database.keySet().iterator();
-        while (iter.hasNext()) {
-            for (MedicalRecord m : database.get(iter.next())) {
-                if (m.getDivision() == div) {
-                    recordList.add(m);
-                }
-            }
-        }
-        if (recordList.size() > 0) {
-            return recordList;
-        } else {
-            System.out.println("No records found for this division");
-            return null;
-        }
-    }
-
-    /**
-     *
-     * @param nurse
-     * @return
-     */
-    public ArrayList<MedicalRecord> nurseRecords(String nurse) {
-        recordList = new ArrayList<MedicalRecord>();
-        iter = database.keySet().iterator();
-        while (iter.hasNext()) {
-            for (MedicalRecord m : database.get(iter.next())) {
-                if (m.getNurse().equals(nurse)) {
-                    recordList.add(m);
-                }
-            }
-        }
-        if (recordList.size() > 0) {
-            return recordList;
-        } else {
-            System.out.println("No records found for this nurse");
-            return null;
-        }
-    }
-
-    /**
-     *
-     * @param doctor
-     * @return
-     */
-    public ArrayList<MedicalRecord> doctorRecords(String doctor) {
-        recordList = new ArrayList<MedicalRecord>();
-        iter = database.keySet().iterator();
-        while (iter.hasNext()) {
-            for (MedicalRecord m : database.get(iter.next())) {
-                if (m.getDoctor().equals(doctor)) {
-                    recordList.add(m);
-                }
-            }
-        }
-        if (recordList.size() > 0) {
-            return recordList;
-        } else {
-            System.out.println("No records found for this doctor");
             return null;
         }
     }

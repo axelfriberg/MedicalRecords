@@ -7,11 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Created by johanmansson on 15-02-18.
+ * A logging class, which keeps track of users
  */
 public class AuditLog {
     PrintStream out;
 
+    /**
+     * Creates a text file for logging
+     */
     public AuditLog() {
         try {
             FileOutputStream auditfile = new FileOutputStream("auditlog.txt", true);
@@ -21,6 +24,10 @@ public class AuditLog {
         }
     }
 
+    /**
+     * Logs that a user has connected to the database
+     * @param userId
+     */
     public void printConnected(String userId) {
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
@@ -28,6 +35,10 @@ public class AuditLog {
         out.flush();
     }
 
+    /**
+     * Logs that a user has disconnected from the database
+     * @param userId
+     */
     public void printDisconnected(String userId) {
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
@@ -35,6 +46,11 @@ public class AuditLog {
         out.flush();
     }
 
+    /**
+     * Logs that an action has been made by the user
+     * @param userId
+     * @param actionType
+     */
     public void printAction(String userId, String actionType) {
         String timeStamp = new SimpleDateFormat("yyyy.MM.dd HH.mm").format(Calendar.getInstance().getTime());
 
